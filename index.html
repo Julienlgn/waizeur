@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WAIZEUR</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <h1>WAIZEUR</h1>
+    <form id="form">
+      <input id="input_city" placeholder="Tapez le nom d'une ville" autocomplete="off" />
+      <div id="suggestions"></div>
+      <button type="submit">Rechercher</button>
+    </form>
+    <p id="city_1"></p>
+  </header>
+
+  <main id="main">
+    <div id="vignette">
+      <p id="city_2"></p>
+      <img id="weather_icon" src="" alt="icon_weather" />
+      <p id="temperature"></p>
+      <p id="description_weather"></p>
+    </div>
+
+    <div id="wind">
+      <img src="./images/icon_wind.png" alt="icon_wind" />
+      <p id="description_wind"></p>
+    </div>
+
+    <div id="humidity">
+      <img src="./images/icon_humidity.png" alt="icon_humidity" />
+      <p id="description_humidity"></p>
+    </div>
+
+    <h2 class="forecast-title">Prévisions toutes les 3 heures</h2>
+    <div id="prevision_weather" class="previsions"></div>
+
+    <h2 class="forecast-title">Prévisions sur 5 jours</h2>
+    <div id="prediction_weather" class="predictions"></div>
+  </main>
+
+  <footer>
+    <p>&copy; Tous droits réservés - Julien Leguen - 2025</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

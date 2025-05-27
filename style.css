@@ -1,0 +1,215 @@
+/* //////// VERSION MOBILE (mobile-first) //////// */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-weight: bold; /* Tout le texte en gras */
+}
+
+header {
+  padding: 20px;
+  color: black;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+  background-color: #fff;
+}
+
+form {
+  position: relative;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+input#input_city,
+button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+}
+
+input#input_city {
+  border: 1px solid #bbb;
+}
+
+button {
+  background-color: #0288d1;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0277bd;
+}
+
+#city_1 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+main#main {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+#vignette,
+#wind,
+#humidity {
+  background-color: rgba(150, 140, 140, 0.4);
+  backdrop-filter: blur(0.7rem);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#vignette img,
+#wind img,
+#humidity img {
+  height: 50px;
+  width: auto;
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#suggestions {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 300px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 5px 5px;
+}
+
+#suggestions div {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#suggestions div:hover {
+  background-color: #f0f0f0;
+}
+
+.previsions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.predictions {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.prevision-item,
+.prediction-item {
+  background-color: rgba(150, 140, 140, 0.5);
+  backdrop-filter: blur(0.5rem);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  flex: 0 1 100px; /* Pour garder une largeur similaire en flex */
+}
+
+footer {
+  background-color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+/* Styles pour les titres des prévisions */
+.forecast-title {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 15px;
+  max-width: 600px;
+  margin: 20px auto 15px auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+/* //////// VERSION DESKTOP //////// */
+@media (min-width: 768px) {
+  input#input_city,
+  button {
+    width: 300px;
+  }
+
+  .prevision-item,
+  .prediction-item {
+    width: 100px;
+  }
+
+  #vignette,
+  #wind,
+  #humidity {
+    width: 100%;
+    max-width: 400px;
+  }
+
+}
