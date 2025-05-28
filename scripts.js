@@ -49,7 +49,7 @@ input.addEventListener("input", async () => {
   }
 
   try {
-    const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${query}&fields=nom&boost=population&limit=5`);
+    const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${query}&limit=5`);
     if (!res.ok) throw new Error("Erreur lors de la récupération des suggestions");
     const data = await res.json();
 
@@ -83,7 +83,7 @@ form.addEventListener("submit", async (e) => {
   const city = input.value.trim();
   if (!city) return;
 
-  const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${city}&fields=nom&boost=population&limit=1`);
+  const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${city}&limit=1`);
   const data = await res.json();
   if (data.length === 0) {
     alert("Ville non trouvée.");
@@ -93,7 +93,7 @@ form.addEventListener("submit", async (e) => {
   const selectedCity = data[0].nom;
   city1.textContent = selectedCity;
   city2.textContent = selectedCity;
-
+  
   try {
     const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${selectedCity}&appid=${API_KEY}&units=metric&lang=fr`);
     if (!weatherRes.ok) throw new Error("Météo actuelle non trouvée");
@@ -162,7 +162,7 @@ form.addEventListener("submit", async (e) => {
       div.classList.add("prevision-item");
       div.innerHTML = `
         <p>${hours}h</p>
-        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="icone météo" />
+        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="icon_weather" />
         <p>${tempVal}°C</p>
       `;
       previsionContainer.appendChild(div);
@@ -193,7 +193,7 @@ form.addEventListener("submit", async (e) => {
       div.classList.add("prediction-item");
       div.innerHTML = `
         <p>${day}</p>
-        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="icone météo" />
+        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="icon_weather" />
         <p>${tempVal}°C</p>
       `;
       predictionContainer.appendChild(div);
