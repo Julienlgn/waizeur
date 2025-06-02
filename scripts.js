@@ -83,7 +83,7 @@ form.addEventListener("submit", async (e) => {
   const city = input.value.trim();
   if (!city) return;
 
-  const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${city}&limit=1`);
+  const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${city}&boost=population&limit=1`);
   const data = await res.json();
   if (data.length === 0) {
     alert("Ville non trouvée.");
