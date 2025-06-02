@@ -20,7 +20,6 @@ const humidityDesc = document.getElementById("description_humidity");
 const previsionContainer = document.getElementById("prevision_weather");
 const predictionContainer = document.getElementById("prediction_weather");
 
-// Fonction pour afficher les sections météo (après chargement réussi)
 function showWeatherSections() {
   vignette.style.display = "block";
   windDiv.style.display = "flex";
@@ -29,7 +28,6 @@ function showWeatherSections() {
   predictionContainer.style.display = "flex";
 }
 
-// Fonction pour cacher les sections météo (au démarrage ou en cas d'erreur)
 function hideWeatherSections() {
   vignette.style.display = "none";
   windDiv.style.display = "none";
@@ -39,10 +37,9 @@ function hideWeatherSections() {
 }
 
 // Événement sur la saisie de texte pour proposer des suggestions de villes
+
 input.addEventListener("input", async () => {
   const query = input.value.trim();
-
-  // PAs de suggestions s'il y a moins de 2 caractères
   if (query.length < 2) {
     suggestionsBox.innerHTML = "";
     return;
@@ -54,7 +51,6 @@ input.addEventListener("input", async () => {
     const data = await res.json();
 
     suggestionsBox.innerHTML = "";
-
     data.forEach(commune => {
       const div = document.createElement("div");
       div.textContent = commune.nom;
@@ -71,6 +67,7 @@ input.addEventListener("input", async () => {
 });
 
 // Clic en dehors du formulaire : cache les suggestions
+
 document.addEventListener("click", e => {
   if (!form.contains(e.target) && !suggestionsBox.contains(e.target)) {
     suggestionsBox.innerHTML = "";
@@ -78,33 +75,35 @@ document.addEventListener("click", e => {
 });
 
 // Soumission du formulaire : récupère et affiche la météo
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const city = input.value.trim();
   if (!city) return;
 
-  const res = await fetch(`https://geo.api.gouv.fr/communes?nom=${city}&boost=population&limit=1`);
-  const data = await res.json();
-  if (data.length === 0) {
-    alert("Ville non trouvée.");
-    return;
-  }
-
-  const selectedCity = data[0].nom;
-  city1.textContent = selectedCity;
-  city2.textContent = selectedCity;
-  
   try {
-    const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${selectedCity}&appid=${API_KEY}&units=metric&lang=fr`);
+    const geoRes = await fetch(`https://geo.api.gouv.fr/communes?nom=${city}&boost=population&limit=1`);
+    const geoData = await geoRes.json();
+    if (geoData.length === 0) {
+      alert("Ville non trouvée.");
+      return;
+    }
+
+    const selectedCity = geoData[0].nom;
+    city1.textContent = selectedCity;
+    city2.textContent = selectedCity;
+
+    const baseURL = "https://api.openweathermap.org/data/2.5";
+    const commonParams = `q=${selectedCity}&appid=${API_KEY}&units=metric&lang=fr`;
+
+    const weatherRes = await fetch(`${baseURL}/weather?${commonParams}`);
     if (!weatherRes.ok) throw new Error("Météo actuelle non trouvée");
     const weatherData = await weatherRes.json();
 
     temp.textContent = `${Math.round(weatherData.main.temp)}°C`;
     desc.textContent = weatherData.weather[0].description;
 
-    // 🟡 Forcer l'utilisation d'une icône de jour
-    let iconCode = weatherData.weather[0].icon;
-    iconCode = iconCode.replace("n", "d");
+    let iconCode = weatherData.weather[0].icon.replace("n", "d");
     weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     weatherIcon.style.display = "inline";
 
@@ -112,37 +111,24 @@ form.addEventListener("submit", async (e) => {
     humidityDesc.textContent = `Humidité : ${weatherData.main.humidity}%`;
 
     // Fond selon la météo uniquement
+
     const weatherMain = weatherData.weather[0].main.toLowerCase();
-    let backgroundImage = "";
-    switch (weatherMain) {
-      case "clear":
-        backgroundImage = "url('./images/sunny.png')";
-        break;
-      case "clouds":
-        backgroundImage = "url('./images/cloudy.png')";
-        break;
-      case "rain":
-      case "drizzle":
-        backgroundImage = "url('./images/rainy.png')";
-        break;
-      case "thunderstorm":
-        backgroundImage = "url('./images/storm.png')";
-        break;
-      case "snow":
-        backgroundImage = "url('./images/snowy2.png')";
-        break;
-      case "fog":
-      case "mist":
-        backgroundImage = "url('./images/foggy.png')";
-        break;
-      default:
-        backgroundImage = "none";
-    }
-    document.getElementById("main").style.backgroundImage = backgroundImage;
+    const bgMap = {
+      clear: "sunny.png",
+      clouds: "cloudy.png",
+      rain: "rainy.png",
+      drizzle: "rainy.png",
+      thunderstorm: "storm.png",
+      snow: "snowy2.png",
+      fog: "foggy.png",
+      mist: "foggy.png",
+    };
+    document.getElementById("main").style.backgroundImage =
+      bgMap[weatherMain] ? `url('./images/${bgMap[weatherMain]}')` : "none";
 
     showWeatherSections();
 
-    const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${selectedCity}&appid=${API_KEY}&units=metric&lang=fr`);
+    const forecastRes = await fetch(`${baseURL}/forecast?${commonParams}`);
     if (!forecastRes.ok) throw new Error("Prévisions non trouvées");
     const forecastData = await forecastRes.json();
 
@@ -153,9 +139,7 @@ form.addEventListener("submit", async (e) => {
       const date = new Date(item.dt * 1000);
       const hours = date.getHours().toString().padStart(2, "0");
 
-      let icon = item.weather[0].icon;
-      icon = icon.replace("n", "d");
-
+      let icon = item.weather[0].icon.replace("n", "d");
       const tempVal = Math.round(item.main.temp);
 
       const div = document.createElement("div");
@@ -184,9 +168,7 @@ form.addEventListener("submit", async (e) => {
     for (const [day, item] of dailyMap) {
       if (count >= 5) break;
 
-      let icon = item.weather[0].icon;
-      icon = icon.replace("n", "d");
-
+      let icon = item.weather[0].icon.replace("n", "d");
       const tempVal = Math.round(item.main.temp);
 
       const div = document.createElement("div");
@@ -209,9 +191,11 @@ form.addEventListener("submit", async (e) => {
 });
 
 // Cache les sections météo au chargement initial
+
 hideWeatherSections();
 
 // Recherche météo de Beauvais à l'ouverture
+
 window.addEventListener("DOMContentLoaded", () => {
   input.value = "Beauvais";
   form.dispatchEvent(new Event("submit"));
